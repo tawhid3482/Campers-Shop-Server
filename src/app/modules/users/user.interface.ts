@@ -3,7 +3,7 @@ export type TUser = {
   email: string;
   password: string;
   phone: string;
-  role: "customer" | "admin";
+  role: "customer" | "admin" | "superAdmin";
   address?: {
     street: string;
     city: string;

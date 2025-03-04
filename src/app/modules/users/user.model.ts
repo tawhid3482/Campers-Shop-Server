@@ -9,7 +9,10 @@ const userSchema = new Schema<TUser>(
     phone: { type: String, required: true },
     role: {
       type: String,
-      enum: { values: ["customer", "admin"], message: "{VALUE} is not correct" },
+      enum: {
+        values: ["customer", "admin", "superAdmin"],
+        message: "{VALUE} is not correct",
+      },
       required: false,
     },
     address: {
