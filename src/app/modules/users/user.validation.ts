@@ -6,8 +6,7 @@ export const createUserValidationSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters long"),
     phone: z
-      .string()
-      .regex(/^\d{10,15}$/, "Phone number must be 10-15 digits long"),
+      .string(),
     address: z
       .object({
         street: z
