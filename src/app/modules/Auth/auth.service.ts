@@ -1,5 +1,4 @@
 import config from '../../config'
-import AppError from '../../errors/AppError'
 import { TLoginUser } from './auth.interface'
 import httpStatus from 'http-status'
 import { JwtPayload } from 'jsonwebtoken'
@@ -8,9 +7,10 @@ import bcrypt from 'bcrypt'
 import { sendEmail } from '../../utils/sendEmail'
 import { createToken } from './auth.utils'
 import { User } from '../users/user.model'
+import AppError from '../../error/AppError'
 
 const loginUserFromClientSite = async (payload: TLoginUser) => {
-  const userData = await User.isUserExistByEmail(payload.email)
+  const userData = await User.isUserExistsByEmail(payload.email)
   if (!userData) {
     throw new AppError(httpStatus.NOT_FOUND, 'this user is not found!')
   }
@@ -28,7 +28,7 @@ const loginUserFromClientSite = async (payload: TLoginUser) => {
     throw new AppError(httpStatus.FORBIDDEN, 'Password do not matched!')
   }
 
-  console.log(userData)
+  // console.log(userData)
 
   const jwtPayload = {
     userEmail: userData?.email,
@@ -49,7 +49,6 @@ const loginUserFromClientSite = async (payload: TLoginUser) => {
   return {
     accessToken,
     refreshToken,
-    needsPasswordChange: userData?.needsPasswordChange,
   }
 }
 
@@ -57,7 +56,7 @@ const changePasswordIntoDB = async (
   user: JwtPayload,
   payload: { oldPassword: string; newPassword: string },
 ) => {
-  const userData = await User.isUserExistByEmail(user.userEmail)
+  const userData = await User.isUserExistsByEmail(user.userEmail)
   if (!userData) {
     throw new AppError(httpStatus.NOT_FOUND, 'this user is not found!')
   }
@@ -106,7 +105,7 @@ const refreshTokenFrom = async (token: string) => {
   const { userEmail, role, iat } = decoded
 
   // check the user is exist
-  const userData = await User.isUserExistByEmail(userEmail)
+  const userData = await User.isUserExistsByEmail(userEmail)
   if (!userData) {
     throw new AppError(httpStatus.NOT_FOUND, 'this user is not found!')
   }
@@ -122,9 +121,9 @@ const refreshTokenFrom = async (token: string) => {
   }
 
   if (
-    userData.passwordChangeAt &&
+    userData.passwordChangedAt &&
     User.isJWTIssuedBeforePasswordChanged(
-      userData.passwordChangeAt,
+      userData.passwordChangedAt,
       iat as number,
     )
   ) {
@@ -148,7 +147,7 @@ const refreshTokenFrom = async (token: string) => {
 
 const forgetPasswordFrom = async (userEmail: string) => {
   // check the user is exist
-  const userData = await User.isUserExistByEmail(userEmail)
+  const userData = await User.isUserExistsByEmail(userEmail)
   if (!userData) {
     throw new AppError(httpStatus.NOT_FOUND, 'this user is not found!')
   }
@@ -185,7 +184,7 @@ const resetPasswordFrom = async (
   token: string,
 ) => {
   // check the user is exist
-  const userData = await User.isUserExistByEmail(payload?.email)
+  const userData = await User.isUserExistsByEmail(payload?.email)
   if (!userData) {
     throw new AppError(httpStatus.NOT_FOUND, 'this user is not found!')
   }
