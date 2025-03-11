@@ -9,7 +9,7 @@ const createUser = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User created Successfully",
+    message: "Customer created Successfully",
     data: result,
   });
 });
@@ -24,8 +24,7 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
-
 export const userController = {
-    createUser,
-    createAdmin
-}
+  createUser,
+  createAdmin,
+};

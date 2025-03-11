@@ -5,7 +5,7 @@ import { User } from "./user.model";
 const createUserIntoDB = async (payload: TUser) => {
   const isUserExist = await User.findOne({ email: payload.email });
   if (isUserExist) {
-    throw new Error("User Already exists");
+    throw new Error("Customer Already exists");
   }
   const userData: Partial<TUser> = {
     ...payload,
