@@ -56,3 +56,12 @@ const updateProduct = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
+export const productControllers ={
+    createProduct,
+    getAllProduct,
+    getSingleProduct,
+    deleteProduct,
+    updateProduct
+}
