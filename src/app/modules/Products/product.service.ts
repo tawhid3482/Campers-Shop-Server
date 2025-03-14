@@ -1,22 +1,31 @@
+import AppError from "../../error/AppError";
 import { TProduct } from "./product.interface";
 import { Product } from "./product.model";
+import httpStatus from "http-status";
 
 const createProductIntoDB = async (payload: TProduct) => {
   const result = await Product.create(payload);
-
   return result;
 };
 const getAllProductFromDB = async () => {
   const result = await Product.find();
-
   return result;
 };
-const getSingleProductFromDB = async (id: string) => {
-  const result = await Product.findById(id);
 
+const getSingleProductFromDB = async (id: string) => {
+  // const isUserExists = await Product.findById(id)
+
+  const result = await Product.findById(id);
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "Product not found");
+  }
   return result;
 };
 const updateProductIntoDB = async (id: string, payload: TProduct) => {
+  const isUserExists = await Product.findById(id);
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, "Product not found");
+  }
   const result = await Product.findByIdAndUpdate(
     id,
     {
@@ -28,6 +37,10 @@ const updateProductIntoDB = async (id: string, payload: TProduct) => {
   return result;
 };
 const deleteProductIntoDB = async (id: string) => {
+  const isUserExists = await Product.findById(id);
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, "Product not found");
+  }
   const result = await Product.findByIdAndUpdate(
     id,
     {
