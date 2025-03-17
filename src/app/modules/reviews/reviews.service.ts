@@ -1,7 +1,7 @@
 
 import httpStatus from "http-status";
 import { TReview } from "./reviews.interface";
-import { Reviews } from "./reviews.mdol";
+import { Reviews } from "./reviews.model";
 import AppError from "../../error/AppError";
 
 const addReviewIntoDB = async (payload: TReview) => {
