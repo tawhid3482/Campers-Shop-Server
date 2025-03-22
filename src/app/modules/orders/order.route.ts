@@ -4,7 +4,6 @@ import validationRequest from "../../middlewares/ValidationRequest";
 import { orderValidation } from "./orders.validation";
 import { OrderControllers } from "./order.controller";
 
-
 const router = express.Router();
 
 router.post(

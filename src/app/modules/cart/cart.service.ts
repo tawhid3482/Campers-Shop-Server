@@ -3,7 +3,6 @@ import httpStatus from "http-status";
 import { Cart } from "./cart.model";
 import { TCart } from "./cart.interface";
 
-
 const createCartIntoDB = async (payload: TCart) => {
   const result = await Cart.create(payload);
   return result;
