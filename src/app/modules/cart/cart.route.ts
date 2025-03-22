@@ -4,8 +4,6 @@ import validationRequest from "../../middlewares/ValidationRequest";
 import { categoryValidation } from "../Categories/categories.validation";
 import { CategoryControllers } from "../Categories/categories.controller";
 
-
-
 const router = express.Router();
 
 router.post(
