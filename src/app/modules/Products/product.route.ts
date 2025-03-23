@@ -28,3 +28,4 @@ router.delete(
   auth("ADMIN", "SUPER_ADMIN"),
   productControllers.deleteProduct
 );
+export const productRoute = router;

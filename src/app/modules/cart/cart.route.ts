@@ -28,3 +28,4 @@ router.delete(
   auth("ADMIN", "SUPER_ADMIN"),
   CategoryControllers.deleteCategory
 );
+export const cartRoute = router;

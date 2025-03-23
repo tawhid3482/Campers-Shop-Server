@@ -28,3 +28,4 @@ router.delete(
   auth("ADMIN", "SUPER_ADMIN"),
   OrderControllers.deleteOrder
 );
+export const orderRoute = router;
