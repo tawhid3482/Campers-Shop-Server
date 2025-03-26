@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import { TPayment } from "./payment.interface";
 
 const paymentSchema = new Schema<TPayment>({
@@ -20,3 +20,6 @@ const paymentSchema = new Schema<TPayment>({
   },
   amount: { type: Number, required: true },
 });
+
+
+export const Payment = model<TPayment>("payment",paymentSchema)
