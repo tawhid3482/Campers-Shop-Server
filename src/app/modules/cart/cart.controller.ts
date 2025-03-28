@@ -52,7 +52,7 @@ const updateCart = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: " Cart deleted successfully",
+    message: " Cart updated successfully",
     data: result,
   });
 });

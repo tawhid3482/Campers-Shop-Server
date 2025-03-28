@@ -53,7 +53,7 @@ const updateReviews = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: " Reviews deleted successfully",
+    message: " Reviews updated successfully",
     data: result,
   });
 });

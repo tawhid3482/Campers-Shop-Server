@@ -9,7 +9,7 @@ const createPayment = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Payment created successfully",
+    message: "Payment successful",
     data: result,
   });
 });
@@ -52,7 +52,7 @@ const updatePayment = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: " Payment deleted successfully",
+    message: " Payment updated successfully",
     data: result,
   });
 });

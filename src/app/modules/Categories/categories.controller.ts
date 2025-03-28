@@ -52,7 +52,7 @@ const updateCategory = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: " Category deleted successfully",
+    message: " Category updated successfully",
     data: result,
   });
 });
