@@ -1,8 +1,9 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 import cors from 'cors';
 import cookieParser from "cookie-parser";
 import router from "./app/routes";
 import notFound from "./app/middlewares/notFound";
+import globalErrorHandler from "./app/middlewares/globalErrorhandler";
 const app: Application = express();
 
 app.use(express.json());
@@ -16,10 +17,11 @@ app.get("/", (req:Request, res:Response) => {
 });
 
 
-app.use()
+app.use(globalErrorHandler)
 
-// not found
-app.use(notFound)
-
+// Handle unknown routes
+app.use((req: Request, res: Response, next: NextFunction) => {
+  notFound(req, res, next);
+});
 
 export default app;
