@@ -1,6 +1,6 @@
 import AppError from "../../error/AppError";
 import httpStatus from "http-status";
-import { TCategory } from "./category.interface";
+import { TCategory } from "./categories.interface";
 import { Category } from "./categories.model";
 
 const createCategoryIntoDB = async (payload: TCategory) => {
