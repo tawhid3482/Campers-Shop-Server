@@ -14,17 +14,16 @@ router.post(
 );
 router.get("/categories", CategoryControllers.getAllCategory);
 router.get(
-  "/categories",
-  auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
+  "/categories/:id",
   CategoryControllers.getSingleCategory
 );
 router.put(
-  "/categories",
+  "/categories/:id",
   auth("ADMIN", "SUPER_ADMIN"),
   CategoryControllers.updateCategory
 );
 router.delete(
-  "/categories",
+  "/categories/:id",
   auth("ADMIN", "SUPER_ADMIN"),
   CategoryControllers.deleteCategory
 );

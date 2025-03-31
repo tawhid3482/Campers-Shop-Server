@@ -4,18 +4,18 @@ import { Product } from "./product.model";
 import httpStatus from "http-status";
 
 const createProductIntoDB = async (payload: TProduct) => {
-  const result = await Product.create(payload);
+  const result = (await Product.create(payload)).populate('category')
   return result;
 };
 const getAllProductFromDB = async () => {
-  const result = await Product.find();
+  const result = await Product.find().populate('category');
   return result;
 };
 
 const getSingleProductFromDB = async (id: string) => {
   // const isUserExists = await Product.findById(id)
 
-  const result = await Product.findById(id);
+  const result = await Product.findById(id).populate('category');
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, "Product not found");
   }

@@ -8,14 +8,14 @@ const router = express.Router();
 
 router.post(
   "/products",
-  auth("ADMIN", "SUPER_ADMIN"),
+  // auth("ADMIN", "SUPER_ADMIN"),
   validationRequest(productValidation.productValidationSchema),
   productControllers.createProduct
 );
 router.get("/products", productControllers.getAllProduct);
 router.get(
-  "/products",
-  auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
+  "/products/:id",
+  // auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
   productControllers.getSingleProduct
 );
 router.put(

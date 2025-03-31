@@ -8,4 +8,5 @@ export type TProduct = {
   category: Types.ObjectId;
   image?: string;
   rating?: number;
+  productType?: "regular" | "bestSelling" | "featured";
 };
