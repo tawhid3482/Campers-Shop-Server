@@ -20,11 +20,12 @@ router.get(
   CartControllers.getSingleCart
 );
 
-router.put(
-  "/cart",
-  auth("ADMIN", "SUPER_ADMIN"),
-  CategoryControllers.updateCategory
+router.patch(
+  "/cart/:id",
+  validationRequest(cartValidation.updateCartValidationSchema),
+  CartControllers.updateCart
 );
+
 router.delete(
   "/cart/:id",
   // auth("ADMIN", "SUPER_ADMIN",'CUSTOMER'),

@@ -45,20 +45,62 @@ const getSingleCartFromDB = async (email: string) => {
 };
 
 const updateCartIntoDB = async (id: string, payload: TCart) => {
-  const isUserExists = await Cart.findById(id);
-  if (!isUserExists) {
+  const existingCart = await Cart.findById(id);
+  if (!existingCart) {
     throw new AppError(httpStatus.NOT_FOUND, "Cart not found");
   }
-  const result = await Cart.findByIdAndUpdate(
-    id,
-    {
-      ...payload,
-    },
-    { new: true, runValidators: true }
+
+  // Validate user
+  const isUserExists = await User.findById(payload.user);
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  // Loop through updated items
+  for (const updatedItem of payload.items) {
+    const existingItem = existingCart.items.find(
+      (item) => item.product.toString() === updatedItem.product.toString()
+    );
+
+    if (!existingItem) {
+      throw new AppError(httpStatus.NOT_FOUND, "Item not found in cart");
+    }
+
+    const product = await Product.findById(updatedItem.product);
+    if (!product) {
+      throw new AppError(httpStatus.NOT_FOUND, "Product not found");
+    }
+
+    // Calculate quantity difference
+    const quantityDiff = updatedItem.quantity - existingItem.quantity;
+
+    // Check stock availability if increasing quantity
+    if (quantityDiff > 0 && product.stock < quantityDiff) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        "Not enough stock to increase quantity"
+      );
+    }
+
+    // Update product stock
+    product.stock -= quantityDiff;
+    await product.save();
+
+    // Update cart item
+    existingItem.quantity = updatedItem.quantity;
+    existingItem.price = updatedItem.price;
+  }
+
+  // Recalculate totalAmount
+  existingCart.totalAmount = existingCart.items.reduce(
+    (sum, item) => sum + item.quantity * item.price,
+    0
   );
 
-  return result;
+  const updatedCart = await existingCart.save();
+  return updatedCart;
 };
+
 
 const deleteCartIntoDB = async (id: string) => {
 
