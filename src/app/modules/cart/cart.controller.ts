@@ -23,9 +23,10 @@ const getAllCart = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 const getSingleCart = catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const result = await CartService.getSingleCartFromDB(id);
+  const { email } = req.params;
+  const result = await CartService.getSingleCartFromDB(email);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

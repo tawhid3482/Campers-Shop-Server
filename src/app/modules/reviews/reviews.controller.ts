@@ -1,4 +1,3 @@
-
 import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import { reviewsService } from "./reviews.service";
@@ -58,11 +57,10 @@ const updateReviews = catchAsync(async (req, res) => {
   });
 });
 
-
-export const ReviewsControllers ={
-    createReviews,
-    getAllReviews,
-    getSingleReviews,
-    deleteReviews,
-    updateReviews
-}
+export const ReviewsControllers = {
+  createReviews,
+  getAllReviews,
+  getSingleReviews,
+  deleteReviews,
+  updateReviews,
+};

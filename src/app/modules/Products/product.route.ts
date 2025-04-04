@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post(
   "/products",
-  // auth("ADMIN", "SUPER_ADMIN"),
+  auth("ADMIN", "SUPER_ADMIN"),
   validationRequest(productValidation.productValidationSchema),
   productControllers.createProduct
 );

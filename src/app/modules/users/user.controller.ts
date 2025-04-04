@@ -24,7 +24,20 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleUser = catchAsync(async (req, res) => {
+  const { email } = req.params;
+  const result = await userService.getSingleUserFromDB(email);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: " User retrieved successfully",
+    data: result,
+  });
+});
+
 export const userController = {
   createUser,
   createAdmin,
+  getSingleUser
 };

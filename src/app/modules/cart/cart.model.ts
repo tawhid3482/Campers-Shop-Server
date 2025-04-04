@@ -3,12 +3,12 @@ import { TCart } from "./cart.interface";
 
 const cartSchema = new Schema<TCart>(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: Schema.Types.ObjectId, ref: "user", required: true },
     items: [
       {
         product: {
           type: Schema.Types.ObjectId,
-          ref: "Product",
+          ref: "product",
           required: true,
         },
         quantity: { type: Number, required: true, min: 1 },

@@ -15,5 +15,9 @@ router.post(
   validationRequest(userValidation.createUserValidationSchema),
   userController.createAdmin
 );
+router.get(
+  "/users/:email",
+  userController.getSingleUser
+);
 
 export const userRoutes = router;

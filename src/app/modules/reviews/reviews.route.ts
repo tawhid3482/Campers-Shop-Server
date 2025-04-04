@@ -15,7 +15,7 @@ router.post(
   ReviewsControllers.createReviews
 );
 router.get("/reviews", ReviewsControllers.getAllReviews);
-router.get("/reviews", ReviewsControllers.getSingleReviews);
+router.get("/reviews/:id", ReviewsControllers.getSingleReviews);
 router.put("/reviews", ReviewsControllers.updateReviews);
 router.delete(
   "/reviews",

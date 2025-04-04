@@ -3,7 +3,7 @@ import { z } from "zod";
 const reviewValidationSchema = z.object({
   body: z.object({
     product: z.string(),
-    user: z.string(),
+    userEmail: z.string().email("Invalid email address"),
     rating: z
       .number()
       .min(1, "Rating must be at least 1")
@@ -14,7 +14,7 @@ const reviewValidationSchema = z.object({
 const updateReviewValidationSchema = z.object({
   body: z.object({
     product: z.string(),
-    user: z.string(),
+    userEmail: z.string().email("Invalid email address"),
     rating: z
       .number()
       .min(1, "Rating must be at least 1")

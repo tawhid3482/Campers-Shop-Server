@@ -1,6 +1,8 @@
+import AppError from "../../error/AppError";
 import { sendImageToImageBB } from "../../utils/sendToImageImgBB";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
+import httpStatus from "http-status";
 
 const createUserIntoDB = async (payload: TUser) => {
   const isUserExist = await User.findOne({ email: payload.email });
@@ -29,7 +31,17 @@ const createAdminIntoDB = async (payload: TUser) => {
   return result;
 };
 
+const getSingleUserFromDB = async (email: string) => {
+
+  const result = await User.findOne({ email }).select("-password");
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "Cart not found");
+  }
+  return result;
+};
+
 export const userService = {
   createUserIntoDB,
-  createAdminIntoDB
+  createAdminIntoDB,
+  getSingleUserFromDB
 };

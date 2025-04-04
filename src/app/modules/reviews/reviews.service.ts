@@ -9,14 +9,14 @@ const addReviewIntoDB = async (payload: TReview) => {
   return result;
 };
 const getAllReviewsFromDB = async () => {
-  const result = await Reviews.find();
+  const result = await Reviews.find().populate("product")
   return result;
 };
 
 const getSingleReviewsFromDB = async (id: string) => {
   // const isUserExists = await Product.findById(id)
 
-  const result = await Reviews.findById(id);
+  const result = await Reviews.findById(id).populate("product")
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, "Product not found");
   }
