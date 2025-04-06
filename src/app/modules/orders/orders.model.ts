@@ -1,9 +1,9 @@
 import { model, Schema } from "mongoose";
-import { TOrder } from "./order.interface";
+import { TOrder } from "./order.interface"; 
 
 const orderSchema = new Schema<TOrder>(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: Schema.Types.ObjectId, ref: "user", required: true },
     items: [
       {
         product: {
@@ -21,18 +21,31 @@ const orderSchema = new Schema<TOrder>(
       enum: ["Pending", "Shipped", "Delivered", "Cancelled"],
       required: true,
     },
-    paymentMethod: { type: String, enum: ["Cash", "Card"], required: true },
+    shippingAddress: {
+      name: { type: String, required: true },
+      address: { type: String, required: true },
+      city: { type: String, required: true },
+      phone: { type: String, required: true },
+      zipCode: { type: String, required: true },
+    },
   },
   {
     timestamps: true,
   }
 );
 
-orderSchema.pre('save', async function(next){
-    const order = this;
-    const totalAmount = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    order.totalAmount = totalAmount;
-    next();
-})
+// Pre-save hook to calculate the totalAmount before saving the order
+orderSchema.pre('save', async function(next) {
+  const order = this;
 
-export const Order = model<TOrder>("order", orderSchema);
+  // Calculate the total amount by multiplying price and quantity of each item
+  const totalAmount = order.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  
+  // Assign the calculated totalAmount to the order object
+  order.totalAmount = totalAmount;
+
+  next();
+});
+
+// Create the model
+export const Order = model<TOrder>("Order", orderSchema);

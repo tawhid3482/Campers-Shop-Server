@@ -1,6 +1,6 @@
 import { z } from "zod";
 
- const orderValidationSchema = z.object({
+const orderValidationSchema = z.object({
   body: z.object({
     user: z.string().min(1, "User ID is required"), // MongoDB ObjectId is a string
     items: z
@@ -17,11 +17,16 @@ import { z } from "zod";
       .nonempty("At least one item is required"),
     totalAmount: z.number().positive("Total amount must be a positive number"),
     status: z.enum(["Pending", "Shipped", "Delivered", "Cancelled"]),
-    paymentMethod: z.enum(["Cash", "Card"]),
+    shippingAddress: z.object({
+      name: z.string().min(1, "Name is required"),
+      address: z.string().min(1, "Address is required"),
+      city: z.string().min(1, "City is required"),
+      phone: z.string().min(1, "Phone number is required"), // Adjust phone format validation as needed
+      zipCode: z.string().min(1, "Zip code is required"),
+    }),
   }),
 });
 
-
 export const orderValidation = {
-  orderValidationSchema
-}
+  orderValidationSchema,
+};
