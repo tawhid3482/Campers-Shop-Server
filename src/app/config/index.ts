@@ -18,5 +18,8 @@ export default {
   cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
   cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
   super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
-  imagebb_api_key:process.env.IMAGEBB_API_KEY
+  imagebb_api_key:process.env.IMAGEBB_API_KEY,
+  SSLCOMMERZ_STORE_ID : process.env.SSLCOMMERZ_STORE_ID,
+  SSLCOMMERZ_STORE_PASSWORD : process.env.SSLCOMMERZ_STORE_PASSWORD,
+  SSLCOMMERZ_IS_LIVE : process.env.SSLCOMMERZ_IS_LIVE,
 };

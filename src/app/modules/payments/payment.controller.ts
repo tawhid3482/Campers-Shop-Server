@@ -13,6 +13,7 @@ const createPayment = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 const getAllPayment = catchAsync(async (req, res) => {
   const result = await PaymentService.getAllPaymentFromDB();
 
@@ -23,6 +24,7 @@ const getAllPayment = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 const getSinglePayment = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await PaymentService.getSinglePaymentFromDB(id);
@@ -34,6 +36,18 @@ const getSinglePayment = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getSinglePaymentByEmail = catchAsync(async (req, res) => {
+  const { email } = req.params;
+  const result = await PaymentService.getSinglePaymentFromDB(email);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: " Payment retrieved successfully",
+    data: result,
+  });
+});
+
 const deletePayment = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await PaymentService.deletePaymentIntoDB(id);
@@ -45,6 +59,7 @@ const deletePayment = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 const updatePayment = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await PaymentService.updatePaymentIntoDB(id, req.body);
@@ -57,11 +72,10 @@ const updatePayment = catchAsync(async (req, res) => {
   });
 });
 
-
-export const PaymentControllers ={
-    createPayment,
-    getAllPayment,
-    getSinglePayment,
-    deletePayment,
-    updatePayment
-}
+export const PaymentControllers = {
+  createPayment,
+  getAllPayment,
+  getSinglePayment,
+  deletePayment,
+  updatePayment,
+};

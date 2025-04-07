@@ -4,7 +4,6 @@ import validationRequest from "../../middlewares/ValidationRequest";
 import { paymentValidation } from "./payment.validation";
 import { PaymentControllers } from "./payment.controller";
 
-
 const router = express.Router();
 
 router.post(
@@ -12,11 +11,19 @@ router.post(
   validationRequest(paymentValidation.paymentValidationSchema),
   PaymentControllers.createPayment
 );
-router.get("/payment", PaymentControllers.getAllPayment);
+router.get("/payment",  auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
+PaymentControllers.getAllPayment);
+
 router.get(
   "/payment",
   auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
   PaymentControllers.getSinglePayment
+);
+
+router.get(
+  "/payment/:email",
+  // auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
+  PaymentControllers.getSinglePaymentByEmail
 );
 router.put(
   "/payment",
@@ -24,7 +31,7 @@ router.put(
   PaymentControllers.updatePayment
 );
 router.delete(
-  "/payment",
+  "/payment::email",
   auth("ADMIN", "SUPER_ADMIN"),
   PaymentControllers.deletePayment
 );

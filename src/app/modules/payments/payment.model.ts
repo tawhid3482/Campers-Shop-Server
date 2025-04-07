@@ -1,25 +1,35 @@
 import { model, Schema } from "mongoose";
 import { TPayment } from "./payment.interface";
 
-const paymentSchema = new Schema<TPayment>({
-  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  orderId: { type: Schema.Types.ObjectId, ref: "Order", required: true },
-  paymentMethod: {
-    type: String,
-    enum: { values: ["Cash", "Card"], message: "{VALUE} is not correct" },
-    required: true,
-  },
-  transactionId: { type: String, required: true },
-  status: {
-    type: String,
-    enum: {
-      values: ["Pending", "Success", "Failed"],
-      message: "{VALUE} is not correct",
+const paymentSchema = new Schema<TPayment>(
+  {
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    orderId: { type: Schema.Types.ObjectId, ref: "Order", required: true },
+    paymentMethod: {
+      type: String,
+      enum: { values: ["Cash", "Card"], message: "{VALUE} is not correct" },
+      required: true,
     },
-    default: "Pending",
+    transactionId: { type: String, required: true },
+    val_id: { type: String }, // Optional
+    status: {
+      type: String,
+      enum: {
+        values: ["Pending", "Success", "Failed"],
+        message: "{VALUE} is not correct",
+      },
+      default: "Pending",
+    },
+    amount: { type: Number, required: true },
+    currency: { type: String },
+    storeAmount: { type: Number },
+    cardType: { type: String },
+    bankTranId: { type: String },
+    tranDate: { type: String },
   },
-  amount: { type: Number, required: true },
-});
+  {
+    timestamps: true,
+  }
+);
 
-
-export const Payment = model<TPayment>("payment",paymentSchema)
+export const Payment = model<TPayment>("Payment", paymentSchema);
