@@ -38,7 +38,7 @@ const getSinglePayment = catchAsync(async (req, res) => {
 });
 const getSinglePaymentByEmail = catchAsync(async (req, res) => {
   const { email } = req.params;
-  const result = await PaymentService.getSinglePaymentFromDB(email);
+  const result = await PaymentService.getSinglePaymentByEmail(email);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -76,6 +76,7 @@ export const PaymentControllers = {
   createPayment,
   getAllPayment,
   getSinglePayment,
+  getSinglePaymentByEmail,
   deletePayment,
   updatePayment,
 };

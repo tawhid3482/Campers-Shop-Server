@@ -13,10 +13,6 @@ export const paymentValidationSchema = z.object({
         return { message: "Payment method must be either 'Cash' or 'Card'" };
       },
     }),
-    transactionId: z
-      .string()
-      .min(1, "Transaction ID is required"),
-
     status: z
       .enum(["Pending", "Success", "Failed"], {
         errorMap: () => {
@@ -34,13 +30,6 @@ export const paymentValidationSchema = z.object({
         invalid_type_error: "Amount must be a number",
       })
       .positive("Amount must be a positive number"),
-
-    currency: z.string().optional(),
-    val_id: z.string().optional(),
-    storeAmount: z.number().optional(),
-    cardType: z.string().optional(),
-    bankTranId: z.string().optional(),
-    tranDate: z.string().optional(),
   }),
 });
 

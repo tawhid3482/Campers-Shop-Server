@@ -8,7 +8,6 @@ const router = express.Router();
 
 router.post(
   "/orders",
-  auth("ADMIN", "SUPER_ADMIN"),
   validationRequest(orderValidation.orderValidationSchema),
   OrderControllers.createOrder
 );

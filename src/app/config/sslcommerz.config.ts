@@ -1,5 +1,4 @@
 import SSLCommerzPayment from "sslcommerz-lts";
-import dotenv from "dotenv";
 import config from ".";
 
 

@@ -10,8 +10,7 @@ const paymentSchema = new Schema<TPayment>(
       enum: { values: ["Cash", "Card"], message: "{VALUE} is not correct" },
       required: true,
     },
-    transactionId: { type: String, required: true },
-    val_id: { type: String }, // Optional
+    transactionId: { type: String, required: false },
     status: {
       type: String,
       enum: {
@@ -20,12 +19,7 @@ const paymentSchema = new Schema<TPayment>(
       },
       default: "Pending",
     },
-    amount: { type: Number, required: true },
-    currency: { type: String },
-    storeAmount: { type: Number },
-    cardType: { type: String },
-    bankTranId: { type: String },
-    tranDate: { type: String },
+    amount: { type: Number, required: true }
   },
   {
     timestamps: true,

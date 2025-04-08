@@ -7,7 +7,7 @@ import { PaymentControllers } from "./payment.controller";
 const router = express.Router();
 
 router.post(
-  "/payment",
+  "/create-ssl-payment",
   validationRequest(paymentValidation.paymentValidationSchema),
   PaymentControllers.createPayment
 );
