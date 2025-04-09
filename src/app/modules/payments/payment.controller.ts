@@ -13,6 +13,16 @@ const createPayment = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const paymentSuccess = catchAsync(async (req, res) => {
+  const result = await PaymentService.paymentSuccess(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Payment successful",
+    data: result,
+  });
+});
 
 const getAllPayment = catchAsync(async (req, res) => {
   const result = await PaymentService.getAllPaymentFromDB();
@@ -79,4 +89,5 @@ export const PaymentControllers = {
   getSinglePaymentByEmail,
   deletePayment,
   updatePayment,
+  paymentSuccess
 };

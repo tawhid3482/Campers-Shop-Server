@@ -48,14 +48,33 @@ const createPaymentIntoDB = async (payload: TPayment) => {
   const response = await sslcz.init(initialPayload);
 
   if (response?.GatewayPageURL) {
-    console.log("GatewayPageURL:", response.GatewayPageURL);
-    return response.GatewayPageURL;
+    // console.log(response)
+    // console.log("GatewayPageURL:", response.GatewayPageURL);
+
+     // Save payment to DB
+     await Payment.create({
+      user: payload.user,
+      orderId: payload.orderId,
+      transactionId,
+      paymentMethod: "Card",
+      status: "Pending",
+      amount: payload.amount,
+    });
+
+    const gatewayUrl = response.GatewayPageURL
+    return gatewayUrl
+
   } else {
     console.error("SSLCommerz init failed:", response);
     throw new Error("GatewayPageURL not found in SSLCommerz response");
   }
+
 };
 
+const paymentSuccess = async (payload:any)=>{
+  console.log(payload)
+
+}
 
 const getAllPaymentFromDB = async () => {
   const result = await Payment.find();
@@ -116,4 +135,5 @@ export const PaymentService = {
   updatePaymentIntoDB,
   deletePaymentIntoDB,
   getSinglePaymentByEmail,
+  paymentSuccess
 };

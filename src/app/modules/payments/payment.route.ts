@@ -11,6 +11,9 @@ router.post(
   validationRequest(paymentValidation.paymentValidationSchema),
   PaymentControllers.createPayment
 );
+
+router.post('/success-payment', PaymentControllers.paymentSuccess)
+
 router.get("/payment",  auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
 PaymentControllers.getAllPayment);
 
