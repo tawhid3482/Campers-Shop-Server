@@ -2,19 +2,21 @@ import AppError from "../../error/AppError";
 import httpStatus from "http-status";
 import { TPayment } from "./payment.interface";
 import { Payment } from "./payment.model";
-import config from "../../config";
 import { User } from "../users/user.model";
 import { Order } from "../orders/orders.model";
 
 import { v4 as uuidv4 } from "uuid";
 import { sslcz } from "../../config/sslcommerz.config";
+import config from "../../config";
+import { Cart } from "../cart/cart.model";
 
 const createPaymentIntoDB = async (payload: TPayment) => {
   const isUserExists = await User.findById(payload.user);
   const isOrderExists = await Order.findById(payload.orderId);
 
   if (!isUserExists) throw new AppError(httpStatus.NOT_FOUND, "User not found");
-  if (!isOrderExists) throw new AppError(httpStatus.NOT_FOUND, "Order not found");
+  if (!isOrderExists)
+    throw new AppError(httpStatus.NOT_FOUND, "Order not found");
 
   const transactionId = uuidv4();
 
@@ -22,10 +24,10 @@ const createPaymentIntoDB = async (payload: TPayment) => {
     total_amount: payload.amount,
     currency: "BDT",
     tran_id: transactionId,
-    success_url: "http://localhost:5000/success-payment",
-    fail_url: "http://localhost:5173/fail",
-    cancel_url: "http://localhost:5173/cancel",
-    ipn_url: "http://localhost:5000/ipn-success-payment",
+    success_url: "http://localhost:5000/api/success-payment",
+    fail_url: "http://localhost:5173",
+    cancel_url: "http://localhost:5173",
+    ipn_url: "http://localhost:5000/api/ipn-success-payment",
     shipping_method: "Courier",
     product_name: "Product Name",
     product_category: "Camping",
@@ -51,8 +53,8 @@ const createPaymentIntoDB = async (payload: TPayment) => {
     // console.log(response)
     // console.log("GatewayPageURL:", response.GatewayPageURL);
 
-     // Save payment to DB
-     await Payment.create({
+    // Save payment to DB
+    await Payment.create({
       user: payload.user,
       orderId: payload.orderId,
       transactionId,
@@ -61,20 +63,53 @@ const createPaymentIntoDB = async (payload: TPayment) => {
       amount: payload.amount,
     });
 
-    const gatewayUrl = response.GatewayPageURL
-    return gatewayUrl
-
+    const gatewayUrl = response.GatewayPageURL;
+    return gatewayUrl;
   } else {
     console.error("SSLCommerz init failed:", response);
     throw new Error("GatewayPageURL not found in SSLCommerz response");
   }
-
 };
 
-const paymentSuccess = async (payload:any)=>{
-  console.log(payload)
+const paymentSuccessHandler = async (payload: any, res: any): Promise<void> => {
+  const { val_id, tran_id } = payload;
 
-}
+  // Validate payment from SSLCommerz
+  const response = await fetch(
+    `https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php?val_id=${val_id}&store_id=${config.SSLCOMMERZ_STORE_ID}&store_passwd=${config.SSLCOMMERZ_STORE_PASSWORD}&format=json`
+  );
+
+  if (!response.ok) {
+    throw new AppError(httpStatus.BAD_REQUEST, "Failed to validate payment");
+  }
+
+  const result = await response.json();
+
+  if (result.status !== "VALID") {
+    throw new AppError(httpStatus.BAD_REQUEST, "Payment validation failed");
+  }
+
+  // Update payment status in database
+  const payment = await Payment.findOne({ transactionId: tran_id });
+  if (!payment) {
+    throw new AppError(httpStatus.NOT_FOUND, "Payment not found");
+  }
+
+  payment.status = "Success";
+  await payment.save();
+
+  // 3. Delete user's cart after successful payment
+  const userId = payment.user;
+  const orderStatusUpdate = await Order.findOne({ user: userId });
+  if (orderStatusUpdate) {
+    orderStatusUpdate.orderStatus = "Success";
+    await orderStatusUpdate.save();
+  }
+
+  await Cart.deleteMany({ user: userId });
+
+  return res.redirect("http://localhost:5173");
+};
 
 const getAllPaymentFromDB = async () => {
   const result = await Payment.find();
@@ -135,5 +170,5 @@ export const PaymentService = {
   updatePaymentIntoDB,
   deletePaymentIntoDB,
   getSinglePaymentByEmail,
-  paymentSuccess
+  paymentSuccessHandler,
 };

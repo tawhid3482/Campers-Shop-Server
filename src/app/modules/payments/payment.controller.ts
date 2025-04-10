@@ -13,8 +13,11 @@ const createPayment = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
+
 const paymentSuccess = catchAsync(async (req, res) => {
-  const result = await PaymentService.paymentSuccess(req.body);
+  const result = await PaymentService.paymentSuccessHandler(req.body, res);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -23,6 +26,9 @@ const paymentSuccess = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
+
+
 
 const getAllPayment = catchAsync(async (req, res) => {
   const result = await PaymentService.getAllPaymentFromDB();

@@ -8,6 +8,7 @@ export type TOrder = {
     price: number;
   }[];
   totalAmount: number;
+  orderStatus:"Pending" | "Success" | "Failed";
   status: "Pending" | "Shipped" | "Delivered" | "Cancelled";
   shippingAddress: {
     name: string;

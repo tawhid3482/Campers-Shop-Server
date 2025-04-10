@@ -21,6 +21,14 @@ const orderSchema = new Schema<TOrder>(
       enum: ["Pending", "Shipped", "Delivered", "Cancelled"],
       required: true,
     },
+    orderStatus: {
+      type: String,
+      enum: {
+        values: ["Pending", "Success", "Failed"],
+        message: "{VALUE} is not correct",
+      },
+      default: "Pending",
+    },
     shippingAddress: {
       name: { type: String, required: true },
       address: { type: String, required: true },

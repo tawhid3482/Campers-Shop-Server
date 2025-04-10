@@ -12,7 +12,8 @@ router.post(
   PaymentControllers.createPayment
 );
 
-router.post('/success-payment', PaymentControllers.paymentSuccess)
+router.post('/success-payment', PaymentControllers.paymentSuccess);
+
 
 router.get("/payment",  auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
 PaymentControllers.getAllPayment);
