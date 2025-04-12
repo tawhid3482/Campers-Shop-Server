@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post(
   "/products",
-  auth("ADMIN", "SUPER_ADMIN"),
+  // auth("ADMIN", "SUPER_ADMIN"),
   validationRequest(productValidation.productValidationSchema),
   productControllers.createProduct
 );
@@ -19,13 +19,13 @@ router.get(
   productControllers.getSingleProduct
 );
 router.put(
-  "/products",
-  auth("ADMIN", "SUPER_ADMIN"),
+  "/products/:id",
+  // auth("ADMIN", "SUPER_ADMIN"),
   productControllers.updateProduct
 );
 router.delete(
-  "/products",
-  auth("ADMIN", "SUPER_ADMIN"),
+  "/products/:id",
+  // auth("ADMIN", "SUPER_ADMIN"),
   productControllers.deleteProduct
 );
 export const productRoute = router;

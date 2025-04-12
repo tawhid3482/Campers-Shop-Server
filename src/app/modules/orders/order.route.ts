@@ -13,8 +13,8 @@ router.post(
 );
 router.get("/orders", OrderControllers.getAllOrder);
 router.get(
-  "/orders",
-  auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
+  "/orders/:email",
+  // auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
   OrderControllers.getSingleOrder
 );
 router.put(

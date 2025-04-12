@@ -8,7 +8,7 @@ const orderSchema = new Schema<TOrder>(
       {
         product: {
           type: Schema.Types.ObjectId,
-          ref: "Product",
+          ref: "product",
           required: true,
         },
         quantity: { type: Number, required: true },

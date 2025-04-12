@@ -16,6 +16,7 @@ const productValidationSchema = z.object({
       .default("regular")
       .optional(),
   }),
+  isDeleted:z.boolean().optional()
 });
 const updateProductValidationSchema = z.object({
   body: z.object({
@@ -37,6 +38,8 @@ const updateProductValidationSchema = z.object({
     image: z.string().url("Invalid image URL").optional(),
     rating: z.number().min(0).max(5).optional(),
     productType: z.enum(["regular", "bestSelling", "featured"]).optional(),
+    isDeleted:z.boolean().optional()
+
   }),
 });
 

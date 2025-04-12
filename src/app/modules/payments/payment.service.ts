@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { sslcz } from "../../config/sslcommerz.config";
 import config from "../../config";
 import { Cart } from "../cart/cart.model";
+import { appendFileSync } from "fs";
 
 const createPaymentIntoDB = async (payload: TPayment) => {
   const isUserExists = await User.findById(payload.user);
@@ -112,23 +113,29 @@ const paymentSuccessHandler = async (payload: any, res: any): Promise<void> => {
 };
 
 const getAllPaymentFromDB = async () => {
-  const result = await Payment.find();
+  const result = await Payment.find().populate("user");
   return result;
 };
 
 const getSinglePaymentFromDB = async (id: string) => {
-  const result = await Payment.findById(id);
+  const result = await Payment.findById(id).populate("user");
   if (!result) {
     throw new AppError(httpStatus.NOT_FOUND, "Payment not found");
   }
   return result;
 };
+
 const getSinglePaymentByEmail = async (email: string) => {
-  const result = await Payment.findOne({ email });
-  if (!result) {
-    throw new AppError(httpStatus.NOT_FOUND, "Payment not found");
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
-  return result;
+  const payment = await Payment.find({ user: user._id }).populate({
+    path: "user",
+    select: "-password",
+  });
+
+  return payment;
 };
 
 const updatePaymentIntoDB = async (id: string, payload: TPayment) => {

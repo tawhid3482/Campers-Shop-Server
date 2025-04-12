@@ -3,8 +3,8 @@ import { TPayment } from "./payment.interface";
 
 const paymentSchema = new Schema<TPayment>(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    orderId: { type: Schema.Types.ObjectId, ref: "Order", required: true },
+    user: { type: Schema.Types.ObjectId, ref: "user", required: true },
+    orderId: { type: Schema.Types.ObjectId, ref: "order", required: true },
     paymentMethod: {
       type: String,
       enum: { values: ["Cash", "Card"], message: "{VALUE} is not correct" },

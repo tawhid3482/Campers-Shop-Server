@@ -8,22 +8,20 @@ const createProductIntoDB = async (payload: TProduct) => {
   return result;
 };
 const getAllProductFromDB = async () => {
-  const result = await Product.find().populate('category');
+  const result = await Product.find({ isDeleted: { $ne: true } }).populate('category');
   return result;
 };
 
 const getSingleProductFromDB = async (id: string) => {
-  // const isUserExists = await Product.findById(id)
-
-  const result = await Product.findById(id).populate('category');
-  if (!result) {
+  const product = await Product.findById(id).populate('category');
+  if (!product) {
     throw new AppError(httpStatus.NOT_FOUND, "Product not found");
   }
-  return result;
+  return product;
 };
 const updateProductIntoDB = async (id: string, payload: TProduct) => {
-  const isUserExists = await Product.findById(id);
-  if (!isUserExists) {
+  const isProductExists = await Product.findById(id);
+  if (!isProductExists) {
     throw new AppError(httpStatus.NOT_FOUND, "Product not found");
   }
   const result = await Product.findByIdAndUpdate(
@@ -37,8 +35,9 @@ const updateProductIntoDB = async (id: string, payload: TProduct) => {
   return result;
 };
 const deleteProductIntoDB = async (id: string) => {
-  const isUserExists = await Product.findById(id);
-  if (!isUserExists) {
+  console.log(id)
+  const isProductExists = await Product.findById(id);
+  if (!isProductExists) {
     throw new AppError(httpStatus.NOT_FOUND, "Product not found");
   }
   const result = await Product.findByIdAndUpdate(

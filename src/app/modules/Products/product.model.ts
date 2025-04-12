@@ -14,6 +14,8 @@ const productSchema = new Schema<TProduct>({
     enum: ["regular", "bestSelling", "featured"], 
     default: "regular" 
   },
+  isDeleted:{type:Boolean, default:false}
+
 });
 
 export const Product = model<TProduct>("product", productSchema);

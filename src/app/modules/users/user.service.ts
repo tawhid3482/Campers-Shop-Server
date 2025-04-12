@@ -1,5 +1,7 @@
 import AppError from "../../error/AppError";
 import { sendImageToImageBB } from "../../utils/sendToImageImgBB";
+import { Order } from "../orders/orders.model";
+import { Payment } from "../payments/payment.model";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import httpStatus from "http-status";
@@ -32,16 +34,74 @@ const createAdminIntoDB = async (payload: TUser) => {
 };
 
 const getSingleUserFromDB = async (email: string) => {
-
   const result = await User.findOne({ email }).select("-password");
   if (!result) {
-    throw new AppError(httpStatus.NOT_FOUND, "Cart not found");
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
   return result;
+};
+const getAllUserFromDB = async () => {
+  const result = await User.find().select("-password");
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  return result;
+};
+
+const adminStats = async () => {
+  const users = await User.find().select("-password");
+  const orders = await Order.find();
+  const payments = await Payment.find();
+
+  // Total Revenue
+  const totalRevenue = payments.reduce(
+    (sum, payment) => sum + (payment.amount || 0),
+    0
+  );
+
+  // Confirmed Orders
+  const totalConfirmedOrders = orders.filter(
+    (order) => order.orderStatus === "Success"
+  ).length;
+
+  // Pending Orders
+  const pendingOrders = orders.filter(
+    (order) => order.orderStatus === "Pending"
+  ).length;
+
+  // Shipping Orders
+  const shippingOrders = orders.filter(
+    (order) => order.status === "Delivered"
+  ).length;
+
+  // Daily Revenue (Group by date)
+  const dailyRevenue = await Payment.aggregate([
+    {
+      $group: {
+        _id: {
+          $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+        },
+        total: { $sum: "$amount" },
+      },
+    },
+    { $sort: { _id: 1 } }, // sort by date ascending
+  ]);
+
+  return {
+    totalUsers: users.length,
+    totalOrders: orders.length,
+    totalRevenue,
+    totalConfirmedOrders,
+    pendingOrders,
+    shippingOrders,
+    dailyRevenue,
+  };
 };
 
 export const userService = {
   createUserIntoDB,
   createAdminIntoDB,
-  getSingleUserFromDB
+  getSingleUserFromDB,
+  getAllUserFromDB,
+  adminStats,
 };

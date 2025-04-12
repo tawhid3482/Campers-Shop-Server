@@ -9,4 +9,5 @@ export type TProduct = {
   image?: string;
   rating?: number;
   productType?: "regular" | "bestSelling" | "featured";
+  isDeleted:boolean
 };

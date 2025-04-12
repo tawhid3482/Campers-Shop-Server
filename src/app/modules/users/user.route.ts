@@ -20,4 +20,9 @@ router.get(
   userController.getSingleUser
 );
 
+router.get(
+  "/admin-stats",
+  userController.adminStats
+);
+
 export const userRoutes = router;

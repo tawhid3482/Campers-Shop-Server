@@ -11,24 +11,27 @@ router.post(
   validationRequest(paymentValidation.paymentValidationSchema),
   PaymentControllers.createPayment
 );
-
-router.post('/success-payment', PaymentControllers.paymentSuccess);
-
-
-router.get("/payment",  auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
-PaymentControllers.getAllPayment);
+router.post("/success-payment", PaymentControllers.paymentSuccess);
 
 router.get(
   "/payment",
-  auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
-  PaymentControllers.getSinglePayment
+  //  auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
+  PaymentControllers.getAllPayment
 );
 
 router.get(
   "/payment/:email",
-  // auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
   PaymentControllers.getSinglePaymentByEmail
 );
+
+router.get(
+  "/payment/:id",
+  // auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
+  PaymentControllers.getSinglePayment
+);
+
+
+
 router.put(
   "/payment",
   auth("ADMIN", "SUPER_ADMIN"),
