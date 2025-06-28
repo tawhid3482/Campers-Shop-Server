@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from "uuid";
 import { sslcz } from "../../config/sslcommerz.config";
 import config from "../../config";
 import { Cart } from "../cart/cart.model";
-import { appendFileSync } from "fs";
 
 const createPaymentIntoDB = async (payload: TPayment) => {
   const isUserExists = await User.findById(payload.user);

@@ -11,7 +11,7 @@ app.use(cookieParser());
 app.use(express.urlencoded())
 app.use(express.urlencoded({ extended: true })); // Add this line
 
-app.use(cors({ origin: ['http://localhost:5173'], credentials: true }));
+app.use(cors({ origin: ['https://campers-shop-client-ten.vercel.app','http://localhost:5173'], credentials: true }));
 // application routes
 app.use("/api", router);
 

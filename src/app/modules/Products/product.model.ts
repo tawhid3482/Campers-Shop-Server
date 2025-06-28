@@ -7,7 +7,7 @@ const productSchema = new Schema<TProduct>({
   price: { type: Number, required: true },
   stock: { type: Number, required: true },
   category: { type: Schema.Types.ObjectId, ref: "category", required: true },
-  image: { type: String, required: false },
+  image: { type: [String], required: false },
   rating: { type: Number, required: false },
   productType: { 
     type: String, 

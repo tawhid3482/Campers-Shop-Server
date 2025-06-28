@@ -18,7 +18,7 @@ router.get(
   // auth("ADMIN", "SUPER_ADMIN", "CUSTOMER"),
   productControllers.getSingleProduct
 );
-router.put(
+router.patch(
   "/products/:id",
   // auth("ADMIN", "SUPER_ADMIN"),
   productControllers.updateProduct
