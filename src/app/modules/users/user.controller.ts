@@ -45,6 +45,7 @@ const getAllUser = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 const adminStats = catchAsync(async (req, res) => {
   const result = await userService.adminStats();
 

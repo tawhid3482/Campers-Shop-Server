@@ -24,10 +24,10 @@ const createPaymentIntoDB = async (payload: TPayment) => {
     total_amount: payload.amount,
     currency: "BDT",
     tran_id: transactionId,
-    success_url: "http://localhost:5000/api/success-payment",
-    fail_url: "http://localhost:5173",
-    cancel_url: "http://localhost:5173",
-    ipn_url: "http://localhost:5000/api/ipn-success-payment",
+    success_url: "https://campers-shop-one.vercel.app/api/success-payment",
+    fail_url: "https://campers-shop-client-ten.vercel.app",
+    cancel_url: "https://campers-shop-client-ten.vercel.app",
+    ipn_url: "https://campers-shop-one.vercel.app/api/ipn-success-payment",
     shipping_method: "Courier",
     product_name: "Product Name",
     product_category: "Camping",
@@ -108,7 +108,7 @@ const paymentSuccessHandler = async (payload: any, res: any): Promise<void> => {
 
   await Cart.deleteMany({ user: userId });
 
-  return res.redirect("http://localhost:5173");
+  return res.redirect("https://campers-shop-client-ten.vercel.app");
 };
 
 const getAllPaymentFromDB = async () => {

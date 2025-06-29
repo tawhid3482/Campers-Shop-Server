@@ -84,7 +84,20 @@ const adminStats = async () => {
         total: { $sum: "$amount" },
       },
     },
-    { $sort: { _id: 1 } }, // sort by date ascending
+    { $sort: { _id: 1 } },
+  ]);
+
+  // ✅ Monthly Revenue (Group by month-year)
+  const monthlyRevenue = await Payment.aggregate([
+    {
+      $group: {
+        _id: {
+          $dateToString: { format: "%Y-%m", date: "$createdAt" },
+        },
+        total: { $sum: "$amount" },
+      },
+    },
+    { $sort: { _id: 1 } },
   ]);
 
   return {
@@ -95,6 +108,7 @@ const adminStats = async () => {
     pendingOrders,
     shippingOrders,
     dailyRevenue,
+    monthlyRevenue, // ✅ Added Here
   };
 };
 
